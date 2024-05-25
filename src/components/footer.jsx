@@ -1,22 +1,35 @@
 import { Mail, Phone, Send } from "lucide-react";
 import { LogoComponent } from "./logo";
 import { Separator } from "./ui/separator";
+import { Link } from "react-router-dom";
 
 export const Footer = () => {
   return (
     <div>
       <Separator className="w-[95%] m-auto" />
       <div className="flex flex-wrap justify-between items-start gap-4 p-10">
-        <LogoComponent />
+        <Link to={"/"}>
+          <LogoComponent />
+        </Link>
         <div className="text-sm text-muted-foreground w-44">
           <h4 className="mb-3 text-base font-bold text-foreground">
             Quick Links
           </h4>
-          <p>Home</p>
-          <p>Appointment</p>
-          <p>Service</p>
-          <p>About Us</p>
-          <p>Contact Us</p>
+          <Link to={"/"}>
+            <p>Home</p>
+          </Link>
+          <Link to={"/appointment"}>
+            <p>Appointment</p>
+          </Link>
+          <Link to={"/service"}>
+            <p>Service</p>
+          </Link>
+          <Link to={"/about"}>
+            <p>About Us</p>
+          </Link>
+          <Link to={"/contact"}>
+            <p>Contact Us</p>
+          </Link>
         </div>
         <div className="text-sm text-muted-foreground w-44">
           <h4 className="mb-3 text-base font-bold text-foreground">Hours</h4>

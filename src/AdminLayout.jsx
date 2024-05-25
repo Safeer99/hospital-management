@@ -8,10 +8,10 @@ function AdminLayout() {
       <div className="h-[80px] fixed inset-y-0 w-full z-50">
         <AdminNavbar />
       </div>
-      <div className="hidden md:flex h-full w-64 flex-col fixed inset-y-0 translate-y-20 z-50">
+      <div className="hidden md:flex h-full w-52 flex-col fixed inset-y-0 translate-y-20 z-50">
         <AdminSidebar />
       </div>
-      <main className="md:pl-64 pt-[80px] h-full bg-gray-100">
+      <main className="md:pl-52 pt-[80px] h-full bg-gray-100">
         <Outlet />
       </main>
     </div>

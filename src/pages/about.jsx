@@ -7,10 +7,10 @@ const AboutPage = () => {
     <div>
       <section className="p-6 w-full grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="mt-20">
-          <h2 className="text-7xl font-bold mb-8">
+          <h2 className="text-5xl sm:text-7xl font-bold mb-8">
             Virtual Healthcare for You
           </h2>
-          <p className="text-lg w-[70%] text-muted-foreground mb-10">
+          <p className="sm:text-lg w-[70%] text-muted-foreground mb-10">
             Efficiency, Compassion, Care: Streamlining Health for a Better
             Tomorrow!
           </p>
@@ -36,7 +36,9 @@ const AboutPage = () => {
         </div>
         <div className="mt-20">
           <p>Biography</p>
-          <h3 className="text-5xl font-bold mb-8 mt-4">Who we are</h3>
+          <h3 className="text-4xl sm:text-5xl font-bold mb-8 mt-4">
+            Who we are
+          </h3>
           <p className="w-[85%] text-justify leading-6 mb-6">
             Lorem Media is a full-service social media agency. We offer
             businesses innovative solutions that deliver the right type of

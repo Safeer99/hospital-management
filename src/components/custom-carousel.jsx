@@ -40,8 +40,11 @@ export function CustomCarousel() {
     >
       <CarouselContent>
         {Array.from({ length: 6 }).map((_, index) => (
-          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 p-8">
-            <Card className="rounded-[35px] shadow-xl shadow-slate-300">
+          <CarouselItem
+            key={index}
+            className="md:basis-1/2 lg:basis-1/3 sm:p-8"
+          >
+            <Card className="rounded-[35px] sm:shadow-xl shadow-slate-300">
               <CardContent className="w-full h-full p-0 overflow-hidden">
                 <img
                   src={CardImage}
@@ -50,7 +53,7 @@ export function CustomCarousel() {
                 />
               </CardContent>
               <CardFooter className="p-3 flex items-center justify-center">
-                <p className="w-full text-lg text-center font-bold">
+                <p className="w-full text-sm sm:text-lg text-center font-bold">
                   NEUROSCIENCES
                 </p>
               </CardFooter>
@@ -60,7 +63,7 @@ export function CustomCarousel() {
       </CarouselContent>
       <CarouselPrevious />
       <CarouselNext />
-      <div className="flex justify-center items-center gap-4 mt-4">
+      <div className="flex justify-center items-center gap-3 mt-4">
         {Array.from({ length: count }).map((_, i) => (
           <div
             key={i}

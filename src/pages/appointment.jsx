@@ -7,10 +7,10 @@ const AppointmentPage = () => {
     <div>
       <section className="p-6 w-full grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="mt-20">
-          <h2 className="text-7xl font-bold mb-8">
+          <h2 className="text-5xl sm:text-7xl font-bold mb-8">
             Virtual Healthcare for You
           </h2>
-          <p className="text-lg w-[70%] text-muted-foreground mb-10">
+          <p className="sm:text-lg w-[70%] text-muted-foreground mb-10">
             Efficiency, Compassion, Care: Streamlining Health for a Better
             Tomorrow!
           </p>
@@ -31,7 +31,7 @@ const AppointmentPage = () => {
         </div>
       </section>
       <section className="p-8">
-        <h3 className="text-6xl font-bold text-muted-foreground mb-10">
+        <h3 className="text-4xl sm:text-6xl font-bold text-muted-foreground mb-10">
           Appointment
         </h3>
         <AppointmentForm />

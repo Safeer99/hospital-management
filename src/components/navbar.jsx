@@ -16,7 +16,9 @@ export const Navbar = () => {
   return (
     <Sheet>
       <div className="relative z-50 w-full p-4 flex items-center justify-between">
-        <LogoComponent />
+        <Link to={"/"}>
+          <LogoComponent />
+        </Link>
         <div className="hidden absolute inset-y-0 left-1/2 -translate-x-1/2 md:flex items-center justify-center">
           <NavbarRoutes />
         </div>

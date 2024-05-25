@@ -17,22 +17,29 @@ export const AdminNavbar = () => {
         </SheetTrigger>
         <SheetContent
           side="left"
-          className="p-0 pt-20 bg-gradient-to-r from-[#5b71ee] to-[#7d7599]"
+          className="p-0 pt-16 bg-gradient-to-r from-[#5b71ee] to-[#7d7599]"
         >
+          <div className="mb-6 pl-3">
+            <LogoComponent />
+          </div>
           <AdminSidebar />
         </SheetContent>
       </Sheet>
-      <div className="relative w-full flex items-center justify-between gap-4">
+      <div className="relative w-full flex items-center justify-between gap-2">
         <Link to="/">
-          <Button className="text-base" variant="ghost">
+          <Button variant="ghost">
             <LogOut className="size-5 mr-2" />
-            Exit
+            <p className="text-lg bg-clip-text text-transparent bg-gradient-to-b from-[#5b71ee] via-[#7d7599] to-white">
+              Exit
+            </p>
           </Button>
         </Link>
-        <div className="flex items-center justify-center gap-6">
-          <Button className="text-base" variant="ghost">
+        <div className="flex items-center justify-center gap-4">
+          <Button variant="ghost">
             <Patient className="size-5 mr-2" />
-            <span>Badal</span>
+            <p className="text-lg bg-clip-text text-transparent bg-gradient-to-b from-[#5b71ee] via-[#7d7599] to-white">
+              Badal
+            </p>
           </Button>
           <UserAvatar />
         </div>
