@@ -1,8 +1,19 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { AdminNavbar } from "./components/admin-panel/admin-navbar";
 import { AdminSidebar } from "./components/admin-panel/admin-sidebar";
+import { useEffect } from "react";
 
 function AdminLayout() {
+  const navigate = useNavigate();
+
+  const isAdmin = true;
+
+  useEffect(() => {
+    if (!isAdmin) {
+      navigate("/");
+    }
+  }, [isAdmin, location]);
+
   return (
     <div className="overflow-hidden">
       <div className="h-[80px] fixed inset-y-0 w-full z-50">

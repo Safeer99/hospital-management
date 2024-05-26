@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,7 +19,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Weight } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -33,6 +32,9 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
+import { Textarea } from "../ui/textarea";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { nationalityList } from "@/lib/data";
 
 const formSchema = z.object({
   firstname: z.string().min(2, {
@@ -44,9 +46,9 @@ const formSchema = z.object({
   number: z.string().length(10, {
     message: "Number must be of 10 digits.",
   }),
-  email: z.string().email("Invalid email address"),
+  email: z.string().email("Invalid email address."),
   nic: z.string().min(2, {
-    message: "NIC must be at least 2 characters.",
+    message: "Select nationality.",
   }),
   dob: z.string().min(2, {
     message: "Select date of birth.",
@@ -59,6 +61,15 @@ const formSchema = z.object({
   }),
   confirmPassword: z.string().min(6, {
     message: "Password must be at least 6 characters.",
+  }),
+  height: z.string().min(1, {
+    message: "Enter height.",
+  }),
+  weight: z.string().min(1, {
+    message: "Enter weight.",
+  }),
+  address: z.string().min(2, {
+    message: "Address must be at least 2 characters.",
   }),
 });
 
@@ -77,6 +88,9 @@ export function SignupForm() {
       gender: "",
       password: "",
       confirmPassword: "",
+      height: "",
+      weight: "",
+      address: "",
     },
   });
 
@@ -168,9 +182,23 @@ export function SignupForm() {
               name="nic"
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Input placeholder="NIC" {...field} />
-                  </FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="nic" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {nationalityList.map((item, i) => (
+                        <SelectItem key={i} value={item} className="capitalize">
+                          {item}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -216,30 +244,33 @@ export function SignupForm() {
               )}
             />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <FormField
               control={form.control}
-              name="gender"
+              name="height"
               render={({ field }) => (
                 <FormItem>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Gender" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="male">Male</SelectItem>
-                      <SelectItem value="female">Female</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <Input placeholder="Height (in cms)" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="weight"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="Weight (in kgs)" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <FormField
               control={form.control}
               name="password"
@@ -269,6 +300,48 @@ export function SignupForm() {
               )}
             />
           </div>
+          <FormField
+            control={form.control}
+            name="gender"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-8">
+                <FormLabel>Gender</FormLabel>
+                <FormControl>
+                  <RadioGroup
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    className="flex items-center space-x-4"
+                  >
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="male" />
+                      </FormControl>
+                      <FormLabel className="font-normal">Male</FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="female" />
+                      </FormControl>
+                      <FormLabel className="font-normal">Female</FormLabel>
+                    </FormItem>
+                  </RadioGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Textarea placeholder="Address" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="flex items-center justify-center">
             <Button className="px-16 text-base" type="submit" variant="custom">
               Register

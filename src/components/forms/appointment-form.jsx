@@ -32,6 +32,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { departmentsList, doctorsList, nationalityList } from "@/lib/data";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 const formSchema = z.object({
   firstname: z.string().min(2, {
@@ -45,7 +47,7 @@ const formSchema = z.object({
   }),
   email: z.string().email("Invalid email address"),
   nic: z.string().min(2, {
-    message: "NIC must be at least 2 characters.",
+    message: "Select nationality.",
   }),
   dob: z.string().min(2, {
     message: "Select date of birth.",
@@ -56,9 +58,6 @@ const formSchema = z.object({
   appointmentDate: z.string().min(2, {
     message: "Select a appointment date.",
   }),
-  appointmentTime: z.string().min(2, {
-    message: "Select a appointment time.",
-  }),
   departmentName: z.string().min(2, {
     message: "Select a department name.",
   }),
@@ -66,15 +65,11 @@ const formSchema = z.object({
     message: "Select a doctor name.",
   }),
   address: z.string().min(2, {
-    message: "Message must be at least 2 characters.",
+    message: "Address must be at least 2 characters.",
   }),
 });
 
 export function AppointmentForm() {
-  const departmentsList = ["First", "Second", "Third", "Fourth", "Fifth"];
-  const doctorsList = ["First", "Second", "Third", "Fourth", "Fifth"];
-  const appointmentTimeList = ["First", "Second", "Third", "Fourth", "Fifth"];
-
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -87,7 +82,6 @@ export function AppointmentForm() {
       dob: "",
       gender: "",
       appointmentDate: "",
-      appointmentTime: "",
       departmentName: "",
       doctorName: "",
     },
@@ -160,9 +154,23 @@ export function AppointmentForm() {
               name="nic"
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Input placeholder="NIC" {...field} />
-                  </FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="nic" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {nationalityList.map((item, i) => (
+                        <SelectItem key={i} value={item} className="capitalize">
+                          {item}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -208,96 +216,8 @@ export function AppointmentForm() {
               )}
             />
           </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <FormField
-              control={form.control}
-              name="gender"
-              render={({ field }) => (
-                <FormItem>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Gender" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="male">Male</SelectItem>
-                      <SelectItem value="female">Female</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="appointmentDate"
-              render={({ field }) => (
-                <FormItem>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Appointment Date</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date) => date < new Date()}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="appointmentTime"
-              render={({ field }) => (
-                <FormItem>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Appointment Time" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {appointmentTimeList.map((item) => (
-                        <SelectItem key={item} value={item}>
-                          {item}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <FormField
               control={form.control}
               name="departmentName"
@@ -350,7 +270,76 @@ export function AppointmentForm() {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="appointmentDate"
+              render={({ field }) => (
+                <FormItem>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Appointment Date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(date) => date < new Date()}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
+
+          <FormField
+            control={form.control}
+            name="gender"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-8">
+                <FormLabel>Gender</FormLabel>
+                <FormControl>
+                  <RadioGroup
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    className="flex items-center space-x-4"
+                  >
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="male" />
+                      </FormControl>
+                      <FormLabel className="font-normal">Male</FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="female" />
+                      </FormControl>
+                      <FormLabel className="font-normal">Female</FormLabel>
+                    </FormItem>
+                  </RadioGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="address"

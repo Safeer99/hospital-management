@@ -55,8 +55,8 @@ const NavbarRoutes = ({ flow = "row" }) => {
       name: "Appointment",
     },
     {
-      path: "/services",
-      name: "Services",
+      path: "#",
+      name: "Disease Prediction",
     },
     {
       path: "/about",
