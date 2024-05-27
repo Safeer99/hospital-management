@@ -19,10 +19,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CalendarIcon, Weight } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { format, setYear } from "date-fns";
 import {
   Select,
   SelectContent,
@@ -30,30 +30,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
-import { Textarea } from "../ui/textarea";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { nationalityList } from "@/lib/data";
 
 const formSchema = z.object({
-  firstname: z.string().min(2, {
-    message: "First name must be at least 2 characters.",
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
   }),
-  lastname: z.string().min(2, {
-    message: "Last name must be at least 2 characters.",
-  }),
+  role: z.string({ message: "Select a role" }),
   number: z.string().length(10, {
     message: "Number must be of 10 digits.",
   }),
   email: z.string().email("Invalid email address."),
-  nic: z.string().min(2, {
+  nationality: z.string().min(1, {
     message: "Select nationality.",
   }),
   dob: z.date({
     message: "Select date of birth.",
   }),
-  gender: z.string().min(2, {
+  gender: z.string().min(1, {
     message: "Select a gender.",
   }),
   password: z.string().min(6, {
@@ -68,29 +63,25 @@ const formSchema = z.object({
   weight: z.string().min(1, {
     message: "Enter weight.",
   }),
-  address: z.string().min(2, {
-    message: "Address must be at least 2 characters.",
-  }),
 });
 
 export function SignupForm() {
-  const [role, setRole] = useState("patient");
+  const curYear = new Date().getFullYear();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstname: "",
-      lastname: "",
+      name: "",
+      role: "patient",
       number: "",
       email: "",
-      nic: "",
-      dob: "",
+      nationality: "",
+      dob: new Date(),
       gender: "",
       password: "",
       confirmPassword: "",
       height: "",
       weight: "",
-      address: "",
     },
   });
 
@@ -107,42 +98,21 @@ export function SignupForm() {
       return;
     }
     // Do something with the form values.
-    console.log(role);
     console.log(values);
   }
 
   return (
     <div>
-      <Tabs
-        onValueChange={(value) => setRole(value)}
-        value={role}
-        className="ml-auto mr-20 mb-8 w-[300px]"
-      >
-        <TabsList className="bg-[#c8ceee] p-0 rounded-none rounded-t-xl overflow-hidden">
-          <TabsTrigger
-            className="data-[state=active]:bg-[#877bb1] data-[state=active]:text-white p-8"
-            value="patient"
-          >
-            Patient
-          </TabsTrigger>
-          <TabsTrigger
-            className="data-[state=active]:bg-[#877bb1] data-[state=active]:text-white p-8"
-            value="doctor"
-          >
-            Doctor
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-20">
             <FormField
               control={form.control}
-              name="firstname"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder="First Name" {...field} />
+                    <Input placeholder="Name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -150,12 +120,27 @@ export function SignupForm() {
             />
             <FormField
               control={form.control}
-              name="lastname"
+              name="role"
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Input placeholder="Last Name" {...field} />
-                  </FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Patient/Doctor" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="patient" className="capitalize">
+                        patient
+                      </SelectItem>
+                      <SelectItem value="doctor" className="capitalize">
+                        doctor
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -190,7 +175,7 @@ export function SignupForm() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <FormField
               control={form.control}
-              name="nic"
+              name="nationality"
               render={({ field }) => (
                 <FormItem>
                   <Select
@@ -199,7 +184,7 @@ export function SignupForm() {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="nic" />
+                        <SelectValue placeholder="Nationality" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -239,8 +224,34 @@ export function SignupForm() {
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(setYear(field.value, value));
+                        }}
+                        defaultValue={curYear}
+                        value={new Date(field.value).getFullYear()}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Year" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {Array.from({ length: 100 }).map((_, i) => (
+                            <SelectItem
+                              key={i}
+                              value={curYear - i}
+                              className="capitalize"
+                            >
+                              {curYear - i}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <Calendar
                         mode="single"
+                        month={field.value}
+                        onMonthChange={field.onChange}
                         selected={field.value}
                         onSelect={field.onChange}
                         disabled={(date) =>
@@ -336,18 +347,6 @@ export function SignupForm() {
                       <FormLabel className="font-normal">Female</FormLabel>
                     </FormItem>
                   </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="address"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea placeholder="Address" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

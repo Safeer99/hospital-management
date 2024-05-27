@@ -8,14 +8,12 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Popover,
   PopoverContent,
@@ -24,7 +22,7 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { format, setYear } from "date-fns";
 import {
   Select,
   SelectContent,
@@ -36,50 +34,44 @@ import { departmentsList, doctorsList, nationalityList } from "@/lib/data";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 const formSchema = z.object({
-  firstname: z.string().min(2, {
-    message: "First name must be at least 2 characters.",
-  }),
-  lastname: z.string().min(2, {
-    message: "Last name must be at least 2 characters.",
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
   }),
   number: z.string().length(10, {
     message: "Number must be of 10 digits.",
   }),
   email: z.string().email("Invalid email address"),
-  nic: z.string().min(2, {
+  nationality: z.string().min(1, {
     message: "Select nationality.",
   }),
   dob: z.date({
     message: "Select date of birth.",
   }),
-  gender: z.string().min(2, {
+  gender: z.string().min(1, {
     message: "Select a gender.",
   }),
   appointmentDate: z.date({
     message: "Select a appointment date.",
   }),
-  departmentName: z.string().min(2, {
+  departmentName: z.string().min(1, {
     message: "Select a department name.",
   }),
-  doctorName: z.string().min(2, {
+  doctorName: z.string().min(1, {
     message: "Select a doctor name.",
-  }),
-  address: z.string().min(2, {
-    message: "Address must be at least 2 characters.",
   }),
 });
 
 export function AppointmentForm() {
+  const curYear = new Date().getFullYear();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstname: "",
-      lastname: "",
+      name: "",
       number: "",
       email: "",
-      address: "",
-      nic: "",
-      dob: "",
+      nationality: "",
+      dob: new Date(),
       gender: "",
       appointmentDate: "",
       departmentName: "",
@@ -96,32 +88,18 @@ export function AppointmentForm() {
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <FormField
-              control={form.control}
-              name="firstname"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="First Name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lastname"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="Last Name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input placeholder="Name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <FormField
               control={form.control}
@@ -151,7 +129,7 @@ export function AppointmentForm() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <FormField
               control={form.control}
-              name="nic"
+              name="nationality"
               render={({ field }) => (
                 <FormItem>
                   <Select
@@ -160,7 +138,7 @@ export function AppointmentForm() {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="nic" />
+                        <SelectValue placeholder="Nationality" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -200,8 +178,34 @@ export function AppointmentForm() {
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(setYear(field.value, value));
+                        }}
+                        defaultValue={curYear}
+                        value={new Date(field.value).getFullYear()}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Year" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {Array.from({ length: 100 }).map((_, i) => (
+                            <SelectItem
+                              key={i}
+                              value={curYear - i}
+                              className="capitalize"
+                            >
+                              {curYear - i}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <Calendar
                         mode="single"
+                        month={field.value}
+                        onMonthChange={field.onChange}
                         selected={field.value}
                         onSelect={field.onChange}
                         disabled={(date) =>
@@ -216,7 +220,6 @@ export function AppointmentForm() {
               )}
             />
           </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <FormField
               control={form.control}
@@ -309,7 +312,6 @@ export function AppointmentForm() {
               )}
             />
           </div>
-
           <FormField
             control={form.control}
             name="gender"
@@ -335,18 +337,6 @@ export function AppointmentForm() {
                       <FormLabel className="font-normal">Female</FormLabel>
                     </FormItem>
                   </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="address"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea placeholder="Address" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

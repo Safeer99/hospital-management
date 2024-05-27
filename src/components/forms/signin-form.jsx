@@ -19,9 +19,6 @@ const formSchema = z.object({
   password: z.string().min(6, {
     message: "Password must be at least 6 characters.",
   }),
-  confirmPassword: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
-  }),
 });
 
 export function SigninForm() {
@@ -30,23 +27,11 @@ export function SigninForm() {
     defaultValues: {
       email: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
   function onSubmit(values) {
     // Do something with the form values.
-    if (values.password !== values.confirmPassword) {
-      form.setError("confirmPassword", {
-        type: "custom",
-        message: "Password didn't match!!!",
-      });
-      form.setError("password", {
-        type: "custom",
-        message: "Password didn't match!!!",
-      });
-      return;
-    }
     console.log(values);
   }
 
@@ -78,25 +63,9 @@ export function SigninForm() {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Confirm Password"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <div className="flex items-center justify-center">
             <Button className="px-16 text-base" type="submit" variant="custom">
-              Sign In
+              Log In
             </Button>
           </div>
         </form>
