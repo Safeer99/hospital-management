@@ -2,6 +2,7 @@ import { Mail, Phone, Send } from "lucide-react";
 import { LogoComponent } from "./logo";
 import { Separator } from "./ui/separator";
 import { Link } from "react-router-dom";
+import { EMAIL_ID } from "@/lib/data";
 
 export const Footer = () => {
   return (
@@ -49,15 +50,17 @@ export const Footer = () => {
             Friday <span>9:00 - 18:00</span>
           </p>
         </div>
-        <div className="text-sm text-muted-foreground w-44">
+        <div className="text-sm text-muted-foreground w-56">
           <h4 className="mb-3 text-base font-bold text-foreground">Contact</h4>
           <p className="flex items-center justify-start gap-2">
             <Phone className="size-5 my-1 text-foreground" /> 000-000-000
           </p>
-          <p className="flex items-center justify-start gap-2">
-            <Mail className="size-5 my-1 text-foreground" />
-            info@email.com
-          </p>
+          <Link to={`mailto:${EMAIL_ID}`}>
+            <p className="flex items-center justify-start gap-2">
+              <Mail className="size-5 my-1 text-foreground" />
+              {EMAIL_ID}
+            </p>
+          </Link>
           <p className="flex items-center justify-start gap-2">
             <Send className="size-5 my-1 text-foreground" />
             Los Santos

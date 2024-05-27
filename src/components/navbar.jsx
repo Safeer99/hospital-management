@@ -74,7 +74,7 @@ const NavbarRoutes = ({ flow = "row" }) => {
       className="flex items-center justify-center gap-1"
     >
       {routes.map((route) => (
-        <Link to={route.path}>
+        <Link key={route.path} to={route.path}>
           <Button
             key={route.path}
             className={cn(

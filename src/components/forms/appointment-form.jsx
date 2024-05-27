@@ -49,13 +49,13 @@ const formSchema = z.object({
   nic: z.string().min(2, {
     message: "Select nationality.",
   }),
-  dob: z.string().min(2, {
+  dob: z.date({
     message: "Select date of birth.",
   }),
   gender: z.string().min(2, {
     message: "Select a gender.",
   }),
-  appointmentDate: z.string().min(2, {
+  appointmentDate: z.date({
     message: "Select a appointment date.",
   }),
   departmentName: z.string().min(2, {

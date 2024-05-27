@@ -7,7 +7,7 @@ const SignInPage = () => {
     <div>
       <section className="p-6 pb-0 w-full grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="pt-72 text-muted-foreground">
-          <h2 className="text-6xl font-bold">Sign In</h2>
+          <h2 className="text-6xl font-bold">Log In</h2>
           <p className="text-3xl font-semibold my-8">
             Please Login To Continue
           </p>

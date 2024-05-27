@@ -1,3 +1,5 @@
+export const EMAIL_ID = "pillboxhospital28@gmail.com";
+
 export const departmentsList = [
   "Cardiology",
   "Dermatology",

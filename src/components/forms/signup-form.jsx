@@ -50,7 +50,7 @@ const formSchema = z.object({
   nic: z.string().min(2, {
     message: "Select nationality.",
   }),
-  dob: z.string().min(2, {
+  dob: z.date({
     message: "Select date of birth.",
   }),
   gender: z.string().min(2, {
@@ -95,6 +95,17 @@ export function SignupForm() {
   });
 
   function onSubmit(values) {
+    if (values.password !== values.confirmPassword) {
+      form.setError("confirmPassword", {
+        type: "custom",
+        message: "Password didn't match!!!",
+      });
+      form.setError("password", {
+        type: "custom",
+        message: "Password didn't match!!!",
+      });
+      return;
+    }
     // Do something with the form values.
     console.log(role);
     console.log(values);

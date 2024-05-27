@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AboutPage from "./pages/about";
 import AppointmentPage from "./pages/appointment";
 import HomePage from "./pages/home";
+import PharmacyPage from "./pages/pharmacy";
 import SignInPage from "./pages/signin";
 import SignUpPage from "./pages/signup";
 import MainLayout from "./MainLayout";
@@ -18,6 +19,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="/appointment" element={<AppointmentPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/pharmacy" element={<PharmacyPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/signin" element={<SignInPage />} />
         </Route>

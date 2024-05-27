@@ -8,14 +8,13 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../ui/textarea";
+import { EMAIL_ID } from "@/lib/data";
 
 const formSchema = z.object({
   firstname: z.string().min(2, {
@@ -46,8 +45,15 @@ export function MessageForm() {
   });
 
   function onSubmit(values) {
-    // Do something with the form values.
-    console.log(values);
+    const subject = "ENQUIRY";
+    const body = `
+      Name: ${values.firstname} ${values.lastname}%0A
+      email: ${values.email}%0A
+      Mobile number: ${values.number}%0A%0A
+      ${values.message.replace("\n", "%0A")}
+    `;
+
+    window.open(`mailto:${EMAIL_ID}?subject=${subject}&body=${body}`);
   }
 
   return (

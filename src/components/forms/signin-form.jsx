@@ -36,6 +36,17 @@ export function SigninForm() {
 
   function onSubmit(values) {
     // Do something with the form values.
+    if (values.password !== values.confirmPassword) {
+      form.setError("confirmPassword", {
+        type: "custom",
+        message: "Password didn't match!!!",
+      });
+      form.setError("password", {
+        type: "custom",
+        message: "Password didn't match!!!",
+      });
+      return;
+    }
     console.log(values);
   }
 
